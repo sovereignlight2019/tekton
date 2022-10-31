@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: test-task
+  namespace: filetransfer-pipelines
+spec:
+  results:
+    - name: check-readme-exists
+      type: string
+      description: Output of readme file existence check
+  steps:
+    - name: check-readme-exists
+      script: |
+        #!/usr/bin/env bash
+        if [ -e workspace/output/README.md ]
+        then
+          echo -n "1" | tee $(results.check-readme-exists.path)
+        else
+          echo -n "0" | tee $(results.check-readme-exists.path)
+        fi  
+      image: registry.redhat.io/ubi8/ubi-minimal
+  workspaces:
+    - name: output
