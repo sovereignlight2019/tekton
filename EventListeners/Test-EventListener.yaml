@@ -1,0 +1,14 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: ft-webhook
+  namespace: filetransfer-pipelines
+spec:
+  serviceAccountName: pipeline-ft
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: ft-trigger-binding
+      name: ft-trigger
+      template:
+        ref: ft-trigger-template
